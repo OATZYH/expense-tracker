@@ -34,32 +34,32 @@ const Sidebar = () => {
         <div className="flex flex-col justify-between h-full">
           <div className={Body()}>
             <SidebarItem
-              title="Home"
+              title="Dashboard"
               icon={<HomeIcon />}
-              isActive={pathname === "/"}
-              href="/"
+              isActive={pathname === "/dashboard"}
+              href="/dashboard"
             />
             <SidebarMenu title="Transactions">
               <SidebarItem
-                isActive={pathname === "/expenses"}
+                isActive={pathname === "/dashboard/expenses"}
                 title="Expenses"
                 icon={<AccountsIcon />}
-                href="expenses"
+                href="dashboard/expenses"
               />
               <SidebarItem
-                isActive={pathname === "/incomes"}
+                isActive={pathname === "/dashboard/incomes"}
                 title="Incomes"
                 icon={<PaymentsIcon />}
-                href="incomes"
+                href="dashboard/incomes"
               />
             </SidebarMenu>
 
             <SidebarMenu title="Features">
               <SidebarItem
-                isActive={pathname === "/subscriptions"}
+                isActive={pathname === "dashboard/subscriptions"}
                 title="Subscriptions"
                 icon={<DevIcon />}
-                href="subscriptions"
+                href="dashboard/subscriptions"
               />
               {/* <SidebarItem isActive={pathname === "/investments"} title="Investments" icon={} /> */}
             </SidebarMenu>

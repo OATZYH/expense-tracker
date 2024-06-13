@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import CardSummary from "@/components/CardSummary";
-import { data} from "../../../db/data";
+import { data} from "../../../../db/data";
 import HistoryTable from "@/components/table/HistoryTable";
 import { Card,CardBody } from "@nextui-org/react";
 
