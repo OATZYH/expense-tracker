@@ -44,13 +44,13 @@ const Sidebar = () => {
                 isActive={pathname === "/dashboard/expenses"}
                 title="Expenses"
                 icon={<AccountsIcon />}
-                href="dashboard/expenses"
+                href="/dashboard/expenses"
               />
               <SidebarItem
                 isActive={pathname === "/dashboard/incomes"}
                 title="Incomes"
                 icon={<PaymentsIcon />}
-                href="dashboard/incomes"
+                href="/dashboard/incomes"
               />
             </SidebarMenu>
 
@@ -59,7 +59,7 @@ const Sidebar = () => {
                 isActive={pathname === "dashboard/subscriptions"}
                 title="Subscriptions"
                 icon={<DevIcon />}
-                href="dashboard/subscriptions"
+                href="/dashboard/subscriptions"
               />
               {/* <SidebarItem isActive={pathname === "/investments"} title="Investments" icon={} /> */}
             </SidebarMenu>

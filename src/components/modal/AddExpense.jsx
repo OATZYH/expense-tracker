@@ -10,7 +10,7 @@ import {
   Input
 } from "@nextui-org/react";
 
-export default function AddModal() {
+export default function AddExpense() {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   return (
     <div>

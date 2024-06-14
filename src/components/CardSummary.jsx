@@ -7,7 +7,7 @@ import {
   Chip,
 } from "@nextui-org/react";
 import { BalanceIcon } from "./icons/sidebar/balance-icon";
-import AddModal from "./modal/add";
+import AddExpense from "./modal/AddExpense";
 
 export default function CardSummary({ title, amount }) {
   return (
@@ -15,7 +15,7 @@ export default function CardSummary({ title, amount }) {
       <CardHeader className="flex gap-3">
         <div className="flex flex-row w-full items-center justify-between">
           <p className="text-md">{title}</p>
-         <AddModal />
+         <AddExpense />
         </div>
       </CardHeader>
       <Divider />
