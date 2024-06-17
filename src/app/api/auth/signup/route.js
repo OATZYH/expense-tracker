@@ -23,13 +23,21 @@ export async function POST(request) {
 
   try {
     const db = await pool.getConnection()
-    const query = `INSERT INTO user (id, username, email, password_hash) VALUES (?,?, ?, ?)`
-    const [rows] = await db.execute(query, [id, username, email, hashedPassword])
-    db.release()
+    const [results] = await db.query(
+      "SELECT * FROM `user` WHERE email = ? OR username = ?",
+      [email, username]
+    );
 
-    return NextResponse.json({
-      message: 'User created successfully',
-    })
+    if (results.length > 0) {
+      return res.status(400).json({ error: "Email or username already in use" });
+    }
+
+    await db.query(
+      "INSERT INTO user (id, username, email, password_hash) VALUES (?,?, ?, ?)",
+      [id, username, email, hashedPassword]
+    );
+
+    return NextResponse.json({ message: 'Signup successful' })
   } catch (error) {
     return NextResponse.json({
       error: error,

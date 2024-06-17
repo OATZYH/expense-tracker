@@ -9,9 +9,10 @@ import {
   CardHeader,
 } from "@nextui-org/react";
 import axios from "axios";
+import { apiUrls } from "@/lib/apiUrl";
 
+// TODO: Add validation from backend
 export default function SignupForm() {
-
   const [email, setEmail] = useState("");
   // Helper function to validate email
   const validateEmail = (email) => {
@@ -35,9 +36,10 @@ export default function SignupForm() {
       email: formData.get("email"),
       password: formData.get("password"),
     };
-
+    console.log(apiUrls.auth.signup);
     try {
-      const res = await axios.post("/api/auth/signup", data);
+      const res = await axios.post(apiUrls.auth.signup, data);
+      console.log(res);
       if(res.status === 200) {
         window.location.href = "/login";
       }

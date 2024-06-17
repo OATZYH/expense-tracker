@@ -16,11 +16,15 @@ import { AccountsIcon } from "../icons/sidebar/accounts-icon";
 import { DevIcon } from "../icons/sidebar/dev-icon";
 import { usePathname } from "next/navigation";
 import { Button } from "@nextui-org/react";
-
+import { signOut } from "next-auth/react";
 const Sidebar = () => {
   const pathname = usePathname();
   const { collapsed, setCollapsed } = useState(false);
-
+  const handleLogout = () => {
+    signOut( {
+      callbackUrl: "/login"
+    });
+  };
   return (
     <aside className="h-screen z-[20] sticky top-0">
       {collapsed ? (
@@ -65,7 +69,7 @@ const Sidebar = () => {
             </SidebarMenu>
           </div>
           <div className={Footer()}>
-            <Button variant="ghost" size="lg" color="danger">Logout</Button>
+            <Button variant="ghost" size="lg" color="danger" onPress={handleLogout}>Logout</Button>
           </div>
         </div>
       </div>
