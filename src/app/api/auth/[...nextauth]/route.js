@@ -43,6 +43,7 @@ export const handler = NextAuth({
   session: {
     strategy: "jwt",
   },
+  secret: process.env.JWT_SECRET,
   callbacks: {
     jwt: async ({ user, token }) => {
       if (user) {
@@ -57,13 +58,6 @@ export const handler = NextAuth({
         session.user.username = token.username;
       }
       return session;
-    },
-    redirect: async ({ url, baseUrl }) => {
-      // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url;
-      return baseUrl;
     },
   },
 });
