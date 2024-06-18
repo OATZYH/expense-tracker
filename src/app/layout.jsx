@@ -1,7 +1,10 @@
 import "./globals.css";
+import { Noto_Sans_Thai } from "@next/font/google";
 import { Providers } from "./provider";
 import SessionProvider from "../components/SessionProvider";
 import { getServerSession } from "next-auth";
+
+const noto = Noto_Sans_Thai({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Expense Tracker",
@@ -12,11 +15,9 @@ export default async function RootLayout({ children }) {
   const session = await getServerSession();
   return (
     <html lang="en">
-      <body className="font-noto">
+      <body className={noto.className}>
         <Providers>
-          <SessionProvider session={session}>
-          {children}
-          </SessionProvider>
+          <SessionProvider session={session}>{children}</SessionProvider>
         </Providers>
       </body>
     </html>

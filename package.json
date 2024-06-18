@@ -9,7 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@internationalized/date": "^3.5.4",
+    "@next/font": "^14.2.4",
     "@nextui-org/react": "^2.4.1",
+    "@react-aria/i18n": "^3.11.1",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "chart.js": "^4.4.3",
