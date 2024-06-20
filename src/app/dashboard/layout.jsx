@@ -1,6 +1,7 @@
+'use client';
 import React from "react";
-import Layout from "@/components/layout/layout";
+import Layout from "@/components/layout/Layout";
 
-export default function layout({ children }) {
+export default function DashboardLayout({ children }) {
   return <Layout>{children}</Layout>;
 }

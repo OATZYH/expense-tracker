@@ -1,5 +1,5 @@
 import React from 'react';
-import { data, columns, users, statusOptions } from "../../../db/data";
+import { data, columns, users, statusOptions } from "../../constants/data";
 import {
   Table,
   TableHeader,
@@ -10,11 +10,6 @@ import {
   Chip,
   User,
   Tooltip,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  Button,
 } from "@nextui-org/react";
 import { VerticalDotsIcon } from "@/components/icons/VerticalDotsIcon";
 import { EditIcon } from '@/components/icons/EditIcon';

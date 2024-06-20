@@ -1,12 +1,14 @@
 'use client'
 import Sidebar from '../sidebar/Sidebar'
-import Header from './header'
+import Header from './Header'
+import { usePathname } from "next/navigation";
 
 export default function Layout({children}) {
+  const pathname = usePathname();
   return (
     <section className="flex">
         <Sidebar />
-        <Header>{children}</Header>
+        <Header showDatePicker={pathname === '/dashboard'}>{children}</Header>
       </section>
   )
 }

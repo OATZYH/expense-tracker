@@ -43,7 +43,7 @@ export const handler = NextAuth({
   session: {
     strategy: "jwt",
   },
-  secret: process.env.JWT_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     jwt: async ({ user, token }) => {
       if (user) {

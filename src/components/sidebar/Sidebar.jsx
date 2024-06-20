@@ -60,7 +60,7 @@ const Sidebar = () => {
 
             <SidebarMenu title="Features">
               <SidebarItem
-                isActive={pathname === "dashboard/subscriptions"}
+                isActive={pathname === "/dashboard/subscriptions"}
                 title="Subscriptions"
                 icon={<DevIcon />}
                 href="/dashboard/subscriptions"

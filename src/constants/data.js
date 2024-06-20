@@ -1,21 +1,3 @@
-const data = [
-  {
-    id: 1,
-    title: "Total Balance",
-    amount: 1000,
-  },
-  {
-    id: 2,
-    title: "Total Income",
-    amount: 1000,
-  },
-  {
-    id: 3,
-    title: "Total Expenses",
-    amount: 1000,
-  },
-];
-
 const columns = [
   {name: "ID", uid: "id", sortable: true},
   {name: "NAME", uid: "name", sortable: true},
@@ -236,4 +218,4 @@ const users = [
   },
 ];
 
-export {data,columns, users, statusOptions};
+export {columns, users, statusOptions};

@@ -1,11 +1,10 @@
 "use client";
 import React from "react";
-import {
-  Navbar,
-  NavbarContent,
-} from "@nextui-org/react";
+import { Navbar, NavbarContent} from "@nextui-org/react";
+import DatePicker from "../DatePicker";
 
-export default function Header({ children }) {
+export default function Header({ children, showDatePicker = false }) {
+  
   return (
     <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
       <Navbar
@@ -18,15 +17,17 @@ export default function Header({ children }) {
         <NavbarContent className="md:hidden">
           {/* <BurguerButton /> */}
         </NavbarContent>
-        <NavbarContent className="w-full ">
-          Content
+        <NavbarContent className="w-fit">Content</NavbarContent>
+        <NavbarContent>
+          {showDatePicker ? (
+            <DatePicker />
+          
+          ) : 
+          null}
         </NavbarContent>
-        <NavbarContent
-          justify="end"
-          className="w-fit data-[justify=end]:flex-grow-0"
-        >
+        <NavbarContent justify="end" className="w-fit">
           <div>end</div>
-         </NavbarContent>
+        </NavbarContent>
       </Navbar>
       {children}
     </div>
