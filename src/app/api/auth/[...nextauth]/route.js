@@ -1,9 +1,13 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import pool from "@/lib/db";
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { PrismaClient } from "@prisma/client"
+
+const prisma = new PrismaClient()
 
 export const handler = NextAuth({
+  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -12,31 +16,20 @@ export const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const db = await pool.getConnection();
-        try {
-          const query = "SELECT * FROM user WHERE email = ? ";
-          const [rows] = await db.execute(query, [credentials.email]);
-
-          if (rows.length === 0) {
-            console.log("No user found with this identifier");
-            return null;
-          }
-
-          const user = rows[0];
-          const passwordValid = bcrypt.compareSync(credentials.password, user.password_hash);
-          
-          if (!passwordValid) {
-            console.log("Password is incorrect");
-            return null;
-          }
-
-          return user;
-        } catch (error) {
-          console.error("Error in authorization:", error);
-          return null;
-        } finally {
-          db.release();
+        const { email, password } = credentials;
+        const user = await prisma.user.findUnique({
+          where: {
+            email: email,
+          },
+        });
+        if (!user) {
+          throw new Error("No user found");
         }
+        const isValid = await bcrypt.compare(password, user.passwordHash);
+        if (!isValid) {
+          throw new Error("Invalid password");
+        }
+        return user;
       },
     }),
   ],
