@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import {
   Button,
@@ -14,11 +15,40 @@ import {
 import { parseDate, getLocalTimeZone, today } from "@internationalized/date";
 import SelectCategory from "./select/SelectCategory";
 import { expensesCategory, expensesPay } from "@/constants/categories";
+import axios from "axios";
 
 export default function AddExpense() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const now = today(getLocalTimeZone());
+
   const [value, setValue] = useState(now);
+  const [selectedCategory, setSelectedCategory] = useState(new Set());
+  const [selectedPay, setSelectedPay] = useState(new Set());
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const data = {
+      name: formData.get("name"),
+      amount: formData.get("amount"),
+      date: value,
+      category: [...selectedCategory][0],
+      pay: [...selectedPay][0],
+      note: formData.get("note"),
+    };
+
+    // console.log("Form Data", data);
+    try {
+      const res = await axios.post("/api/transaction/expense", data);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      e.target.reset();
+      onOpenChange(false);
+    }
+  }
 
   return (
     <div>
@@ -37,61 +67,70 @@ export default function AddExpense() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1 text-2xl">
-                Add Expense
-              </ModalHeader>
-              <ModalBody>
-                <Input
-                  bordered
-                  fullWidth
-                  size="lg"
-                  label="Expense Name"
-                  labelPlacement="outside"
-                  placeholder="What did you spend?"
-                  classNames={{ label: "font-bold" }}
-                />
-                <div className="grid grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit}>
+                <ModalHeader className="flex flex-col gap-1 text-2xl">
+                  Add Expense
+                </ModalHeader>
+                <ModalBody>
                   <Input
+                    name="name"
                     bordered
                     fullWidth
-                    label="Amount"
+                    size="lg"
+                    label="Expense Name"
                     labelPlacement="outside"
-                    placeholder="How much?"
+                    placeholder="What did you spend?"
                     classNames={{ label: "font-bold" }}
                   />
-                  <div className="flex flex-col">
-                    <label className="font-bold text-sm mb-1">Date</label>
-                    <DatePicker
-                      locale="en"
-                      value={value}
-                      onChange={setValue}
-                      clearable
+                  <div className="grid grid-cols-2 gap-4">
+                    <Input
+                      name="amount"
+                      bordered
+                      fullWidth
+                      label="Amount"
+                      labelPlacement="outside"
+                      placeholder="How much?"
+                      classNames={{ label: "font-bold" }}
+                    />
+                    <div className="flex flex-col">
+                      <label className="font-bold text-sm mb-1">Date</label>
+                      <DatePicker
+                        locale="en"
+                        value={value}
+                        onChange={setValue}
+                        clearable
+                      />
+                    </div>
+                    <SelectCategory
+                      label={"Category"}
+                      placeholder={"What did you spend?"}
+                      category={expensesCategory}
+                      selectedKeys={selectedCategory}
+                      setSelectedKeys={setSelectedCategory}
+                    />
+
+                    <SelectCategory
+                      label={"Paid With"}
+                      placeholder={"Which wallet?"}
+                      category={expensesPay}
+                      selectedKeys={selectedPay}
+                      setSelectedKeys={setSelectedPay}
                     />
                   </div>
-                  <SelectCategory
-                    label={"Category"}
-                    placeholder={"What did you spend?"}
-                    category={expensesCategory}
+                  <Textarea
+                    name="note"
+                    label="Note (Optional)"
+                    bordered
+                    labelPlacement="outside"
+                    placeholder="Note Here"
                   />
-
-                  <SelectCategory
-                    label={"Paid With"}
-                    placeholder={"Which wallet?"}
-                    category={expensesPay}
-                  />
-                </div>
-                <Textarea
-                  label="Note (Optional)"
-                  bordered
-                  labelPlacement="outside"
-                  placeholder="Note Here"
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button color="primary" className="w-full" onPress={onClose}>
-                  Submit
-                </Button>
-              </ModalFooter>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="primary" className="w-full" type="submit">
+                    Submit
+                  </Button>
+                </ModalFooter>
+              </form>
             </>
           )}
         </ModalContent>

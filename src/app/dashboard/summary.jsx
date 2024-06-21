@@ -11,8 +11,7 @@ export default function DashboardSummary() {
 
   useEffect(() => {
     setLoading(true);
-    fetchData();
-    setLoading(false);
+    fetchData().finally(() => setLoading(false));
   }, []);
     
   

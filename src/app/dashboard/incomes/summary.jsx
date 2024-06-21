@@ -4,8 +4,8 @@ import CardSummary from "@/components/CardSummary";
 import useTransaction from "@/stores/transactionStore";
 import { Card, Skeleton } from "@nextui-org/react";
 
-export default function ExpenseSummary() {
-  const { fetchData, totalExpense, totalExpenseTransactions } =
+export default function IncomeSummary() {
+  const { fetchData, totalIncome, totalIncomeTransactions } =
   useTransaction();
 const [loading, setLoading] = useState(true);
 
@@ -32,11 +32,11 @@ return (
       <>
         <CardSummary
           title="Total Expense"
-          amount={totalExpense}
+          amount={totalIncome}
         />
         <CardSummary
           title="Total Expense Transactions"
-          amount={totalExpenseTransactions}
+          amount={totalIncomeTransactions}
         />
       </>
     )}

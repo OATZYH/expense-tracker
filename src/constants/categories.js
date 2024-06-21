@@ -19,8 +19,7 @@ export const expensesPay = [
   { key: "debit", name: "Debit Card", emoji: "💳" },
   { key: "ewallet", name: "E-Wallet", emoji: "🪪" },
   { key: "online", name: "Online Banking", emoji: "🏦" }
-]
-;
+];
 
 export const incomeCategory = [
   {key: "ads", name: "Ads"},

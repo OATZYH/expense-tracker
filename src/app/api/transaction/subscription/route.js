@@ -1,17 +1,25 @@
 import { NextResponse } from "next/server";
-import { dbConnection, getUserId } from "@/lib/dbConnection";
+import { PrismaClient } from "@prisma/client";
+import { getUserId } from "@/lib/getUserId";
+import convertDate from "@/lib/formatDate";
+
+const prisma = new PrismaClient();
 
 export async function GET(request) {
-  const db = await dbConnection();
-
   try {
     const userId = await getUserId(request);
-    const [results] = await db.query(
-      "SELECT * FROM `subscription` WHERE user_id = ?",
-      [userId]
-    );
+    const results = await prisma.subscription.findMany({
+      where: {
+        userId: userId,
+      },  
+    });
     return NextResponse.json(results);
   } catch (error) {
-    console.error(error);
+    return NextResponse.json(
+      {
+        error: error.message,
+      },
+      { status: 500 }
+    );
   }
 }
