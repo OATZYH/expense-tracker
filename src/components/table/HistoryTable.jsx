@@ -1,5 +1,4 @@
-import React from 'react';
-import { data, columns, users, statusOptions } from "../../constants/data";
+import React from "react";
 import {
   Table,
   TableHeader,
@@ -7,33 +6,46 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Chip,
-  User,
   Tooltip,
+  Button,
 } from "@nextui-org/react";
-import { VerticalDotsIcon } from "@/components/icons/VerticalDotsIcon";
-import { EditIcon } from '@/components/icons/EditIcon';
-import { DeleteIcon } from '@/components/icons/DeleteIcon';
+import { EditIcon } from "@/components/icons/EditIcon";
+import { DeleteIcon } from "@/components/icons/DeleteIcon";
 import TopContent from "@/components/table/TopContent";
 import BottomContent from "@/components/table/BottomContent";
+import { expensesCategory, expensesPay } from "@/constants/categories";
+import { convertDBtoDate } from "@/lib/formatDate";
 
-const statusColorMap = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
+const INITIAL_VISIBLE_COLUMNS = [
+  "name",
+  "amount",
+  "category",
+  "paidVia",
+  "date",
+  "note",
+  "actions",
+];
+
+const renderEmoji = (key, data) => {
+  const item = data.find((item) => item.key === key.toLowerCase());
+  return item ? item.emoji : "";
 };
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
-
-export default function HistoryTable() {
+export default function HistoryTable({
+  historyData,
+  columns,
+  categoryOptions,
+  handleEdit,
+  handleDelete,
+}) {
   const [filterValue, setFilterValue] = React.useState("");
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS)
   );
-  const [statusFilter, setStatusFilter] = React.useState("all");
+  const [categoryFilter, setCategoryFilter] = React.useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
-    column: "age",
+    column: "date",
     direction: "ascending",
   });
   const [page, setPage] = React.useState(1);
@@ -44,29 +56,26 @@ export default function HistoryTable() {
     if (visibleColumns === "all") return columns;
 
     return columns.filter((column) =>
-      Array.from(visibleColumns).includes(column.uid)
+      Array.from(visibleColumns).includes(column.key)
     );
-  }, [visibleColumns]);
+  }, [visibleColumns, columns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredTransactions = [...historyData];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredTransactions = filteredTransactions.filter((transaction) =>
+        transaction.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+    if (categoryFilter !== "all") {
+      filteredTransactions = filteredTransactions.filter((transaction) =>
+        Array.from(categoryFilter).includes(transaction.category.toLowerCase())
       );
     }
 
-    return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+    return filteredTransactions;
+  }, [historyData, filterValue, categoryFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -77,6 +86,7 @@ export default function HistoryTable() {
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
+  //TODO: Sorting all items
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a, b) => {
       const first = a[sortDescriptor.column];
@@ -87,151 +97,170 @@ export default function HistoryTable() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
+  //NOTE: Row renderer
+  const renderCell = React.useCallback((data, columnKey) => {
+    const cellValue = data[columnKey];
 
     switch (columnKey) {
       case "name":
+        return <div className="flex items-center">{cellValue}</div>;
+      case "amount":
         return (
-          <User
-            avatarProps={{ radius: "lg", src: user.avatar }}
-            description={user.email}
-            name={cellValue}
-          >
-            {user.email}
-          </User>
-        );
-      case "role":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">
-              {user.team}
-            </p>
+          <div className="flex items-center">
+            <span>{cellValue}</span>
           </div>
         );
-      case "status":
+      case "category":
+        const emoji = renderEmoji(cellValue, expensesCategory);
         return (
-          <Chip
-            className="capitalize"
-            color={statusColorMap[user.status]}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue}
-          </Chip>
+          <div className="flex items-center">
+            {emoji && <span>{emoji}</span>}
+            <span className="ml-2">{cellValue}</span>
+          </div>
+        );
+      case "paidVia":
+        const emoji2 = renderEmoji(cellValue, expensesPay);
+        return (
+          <div className="flex items-center">
+            {emoji2 && <span>{emoji2}</span>}
+            <span className="ml-2">{cellValue}</span>
+          </div>
+        );
+      case "date":
+        const { year, month, day } = convertDBtoDate(cellValue);
+        return (
+          <div className="flex items-center">
+            <span>{`${day}-${month}-${year}`}</span>
+          </div>
+        );
+      //TODO: Limit the length of the note in MODAL
+      case "note":
+        return (
+          <div className="flex items-center">
+            <span>{cellValue}</span>
+          </div>
         );
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
-          <Tooltip content="Edit user">
-            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-              <EditIcon />
-            </span>
-          </Tooltip>
-          <Tooltip color="danger" content="Delete user">
-            <span className="text-lg text-danger cursor-pointer active:opacity-50">
-              <DeleteIcon />
-            </span>
-          </Tooltip>
-        </div>
+            <Tooltip content="Edit data">
+              <Button
+                isIconOnly
+                aria-label="Edit"
+                size="sm"
+                onClick={() => handleEdit(data)}
+              >
+                <EditIcon />
+              </Button>
+            </Tooltip>
+            <Tooltip color="danger" content="Delete user">
+              <Button
+                isIconOnly
+                aria-label="Delete"
+                color="danger"
+                size="sm"
+                onClick={() => handleDelete(data)}
+              >
+                <DeleteIcon />
+              </Button>
+            </Tooltip>
+          </div>
         );
-        default:
-          return cellValue;
-      }
-    }, []);
-  
-    const onNextPage = React.useCallback(() => {
-      if (page < pages) {
-        setPage(page + 1);
-      }
-    }, [page, pages]);
-  
-    const onPreviousPage = React.useCallback(() => {
-      if (page > 1) {
-        setPage(page - 1);
-      }
-    }, [page]);
-  
-    const onRowsPerPageChange = React.useCallback((e) => {
-      setRowsPerPage(Number(e.target.value));
+      default:
+        return cellValue;
+    }
+  }, []);
+
+  const onNextPage = React.useCallback(() => {
+    if (page < pages) {
+      setPage(page + 1);
+    }
+  }, [page, pages]);
+
+  const onPreviousPage = React.useCallback(() => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  }, [page]);
+
+  const onRowsPerPageChange = React.useCallback((e) => {
+    setRowsPerPage(Number(e.target.value));
+    setPage(1);
+  }, []);
+
+  const onSearchChange = React.useCallback((value) => {
+    if (value) {
+      setFilterValue(value);
       setPage(1);
-    }, []);
-  
-    const onSearchChange = React.useCallback((value) => {
-      if (value) {
-        setFilterValue(value);
-        setPage(1);
-      } else {
-        setFilterValue("");
-      }
-    }, []);
-  
-    const onClear = React.useCallback(() => {
+    } else {
       setFilterValue("");
-      setPage(1);
-    }, []);
-  
-    
-    return (
-      <Table
-        aria-label="Example table with custom cells, pagination and sorting"
-        shadow='none'
-        isHeaderSticky
-        bottomContent={
-          <BottomContent
-            page={page}
-            pages={pages}
-            setPage={setPage}
-            onPreviousPage={onPreviousPage}
-            onNextPage={onNextPage}
-          />
-        }
-        bottomContentPlacement="outside"
-        classNames={{
-          wrapper: "max-h-[800px]",
-        }}
-        sortDescriptor={sortDescriptor}
-        topContent={
-          <TopContent
-            filterValue={filterValue}
-            setFilterValue={setFilterValue}
-            statusFilter={statusFilter}
-            setStatusFilter={setStatusFilter}
-            visibleColumns={visibleColumns}
-            setVisibleColumns={setVisibleColumns}
-            onRowsPerPageChange={onRowsPerPageChange}
-            usersLength={users.length}
-            onSearchChange={onSearchChange}
-            onClear={onClear}
-            statusOptions={statusOptions}
-            columns={columns}
-          />
-        }
-        topContentPlacement="outside"
-        onSortChange={setSortDescriptor}
-      >
-        <TableHeader columns={headerColumns}>
-          {(column) => (
-            <TableColumn
-              key={column.uid}
-              align={column.uid === "actions" ? "center" : "start"}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody emptyContent={"No users found"} items={sortedItems}>
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    );
-  }
-  
+    }
+  }, []);
+
+  const onClear = React.useCallback(() => {
+    setFilterValue("");
+    setPage(1);
+  }, []);
+
+  return (
+    <Table
+      aria-label="Example table with custom cells, pagination and sorting"
+      shadow="none"
+      isHeaderSticky
+      bottomContent={
+        <BottomContent
+          items={items}
+          page={page}
+          pages={pages}
+          hasSearchFilter={hasSearchFilter}
+          setPage={setPage}
+          onPreviousPage={onPreviousPage}
+          onNextPage={onNextPage}
+        />
+      }
+      bottomContentPlacement="outside"
+      classNames={{
+        wrapper: "max-h-[1500px]",
+      }}
+      sortDescriptor={sortDescriptor}
+      topContent={
+        <TopContent
+          filterValue={filterValue}
+          categoryFilter={categoryFilter}
+          visibleColumns={visibleColumns}
+          onRowsPerPageChange={onRowsPerPageChange}
+          dataLength={historyData.length}
+          onSearchChange={onSearchChange}
+          onClear={onClear}
+          setVisibleColumns={setVisibleColumns}
+          setCategoryFilter={setCategoryFilter}
+          categoryOptions={categoryOptions}
+          columns={columns}
+        />
+      }
+      topContentPlacement="outside"
+      onSortChange={setSortDescriptor}
+    >
+      <TableHeader columns={headerColumns}>
+        {(column) => (
+          <TableColumn
+            key={column.key}
+            align={column.key === "actions" ? "center" : "start"}
+            allowsSorting={column.sortable}
+          >
+            {column.name}
+          </TableColumn>
+        )}
+      </TableHeader>
+      <TableBody emptyContent={"No transactions found"} items={sortedItems}>
+        {(item) => (
+          <TableRow key={item.id}>
+            {(columnKey) => (
+              <TableCell>{renderCell(item, columnKey)}</TableCell>
+            )}
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  );
+}

@@ -52,17 +52,14 @@ export default function AddExpense() {
 
   return (
     <div>
-      <Button onPress={onOpen} color="primary">
+      <Button onPress={onOpen} color="danger" aria-label="Open add expense form">
         Add Expense
       </Button>
       <Modal
+        aria-labelledby="Add Expense"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         placement="center"
-        classNames={{
-          backdrop:
-            "bg-gradient-to-t from-danger-900 to-danger-900/10 backdrop-opacity-20",
-        }}
       >
         <ModalContent>
           {(onClose) => (
@@ -99,6 +96,7 @@ export default function AddExpense() {
                         value={value}
                         onChange={setValue}
                         clearable
+                        aria-label="Select date"
                       />
                     </div>
                     <SelectCategory
@@ -126,7 +124,7 @@ export default function AddExpense() {
                   />
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="primary" className="w-full" type="submit">
+                  <Button color="primary" className="w-full" type="submit" aria-label="Submit expense">
                     Submit
                   </Button>
                 </ModalFooter>

@@ -6,26 +6,25 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  Select, SelectItem
 } from "@nextui-org/react";
-import { PlusIcon } from "@/components/icons/PlusIcon";
 import { SearchIcon } from "@/components/icons/SearchIcon";
 import { ChevronDownIcon } from "@/components/icons/ChevronDownIcon";
 
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
-export default function TopContent({
+export default function TopContent  ({
   filterValue,
-  setFilterValue,
-  statusFilter,
-  setStatusFilter,
+  categoryFilter,
   visibleColumns,
-  setVisibleColumns,
   onRowsPerPageChange,
-  usersLength,
+  dataLength,
   onSearchChange,
   onClear,
-  statusOptions,
-  columns,
+  setVisibleColumns,
+  setCategoryFilter,
+  categoryOptions,
+  columns
 }) {
   return (
     <div className="flex flex-col gap-4 mx-4 mt-4">
@@ -39,27 +38,27 @@ export default function TopContent({
           onClear={() => onClear()}
           onValueChange={onSearchChange}
         />
-        <div className="flex gap-3">
+        <div className="flex gap-3 ">
           <Dropdown>
             <DropdownTrigger className="hidden sm:flex">
               <Button
                 endContent={<ChevronDownIcon className="text-small" />}
                 variant="flat"
               >
-                Status
+                Category
               </Button>
             </DropdownTrigger>
             <DropdownMenu
               disallowEmptySelection
               aria-label="Table Columns"
               closeOnSelect={false}
-              selectedKeys={statusFilter}
+              selectedKeys={categoryFilter}
               selectionMode="multiple"
-              onSelectionChange={setStatusFilter}
+              onSelectionChange={setCategoryFilter}
             >
-              {statusOptions.map((status) => (
-                <DropdownItem key={status.uid} className="capitalize">
-                  {capitalize(status.name)}
+              {categoryOptions.map((category) => (
+                <DropdownItem key={category.key} className="capitalize">
+                  {capitalize(category.name)}
                 </DropdownItem>
               ))}
             </DropdownMenu>
@@ -82,14 +81,26 @@ export default function TopContent({
               onSelectionChange={setVisibleColumns}
             >
               {columns.map((column) => (
-                <DropdownItem key={column.uid} className="capitalize">
+                <DropdownItem key={column.key} className="capitalize">
                   {capitalize(column.name)}
                 </DropdownItem>
               ))}
             </DropdownMenu>
           </Dropdown>
+            <label className="flex items-center text-default-400 text-small">
+            Rows per page:
+            <select
+              className="bg-transparent outline-none text-default-400 text-small"
+              onChange={onRowsPerPageChange}
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </select>
+          </label>
         </div>
       </div>
     </div>
   );
-}
+};
+

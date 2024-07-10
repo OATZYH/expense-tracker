@@ -11,8 +11,8 @@ export default function BottomContent({
   return (
     <div className="py-2 px-2 flex justify-between items-center">
       <Pagination
-        isCompact
-        showControls
+        // isCompact
+        // showControls
         showShadow
         color="primary"
         page={page}

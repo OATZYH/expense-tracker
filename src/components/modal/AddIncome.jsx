@@ -48,17 +48,14 @@ export default function AddIncome() {
 
   return (
     <div>
-      <Button onPress={onOpen} color="primary">
+      <Button onPress={onOpen} color="success" aria-label="Open add income form" className="text-white">
         Add Income
       </Button>
       <Modal
+        aria-labelledby="Add Income"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         placement="center"
-        classNames={{
-          backdrop:
-            "bg-gradient-to-t from-success-900 to-success-900/10 backdrop-opacity-20",
-        }}
       >
         <ModalContent>
           {(onClose) => (
@@ -95,6 +92,7 @@ export default function AddIncome() {
                         value={value}
                         onChange={setValue}
                         clearable
+                        aria-label="Select date"
                       />
                     </div>
                   </div>
@@ -114,7 +112,7 @@ export default function AddIncome() {
                   />
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="primary" className="w-full" type="submit">
+                  <Button color="primary" className="w-full" type="submit" aria-label="Submit income">
                     Submit
                   </Button>
                 </ModalFooter>

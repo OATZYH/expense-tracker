@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { getUserId } from "@/lib/getUserId";
-import convertDate from "@/lib/formatDate";
+import {convertDatetoDB} from "@/lib/formatDate";
 
 const prisma = new PrismaClient();
 

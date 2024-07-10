@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { getUserId } from "@/lib/getUserId";
-import convertDate from "@/lib/formatDate";
+import {convertDatetoDB} from "@/lib/formatDate";
 
 const prisma = new PrismaClient();
 
@@ -54,7 +54,7 @@ export async function POST(request) {
       );
     }
 
-    const formatDate = convertDate(date);
+    const formatDate = convertDatetoDB(date);
     // console.log(name, amount, category, formatDate, pay, note);
 
     const results = await prisma.expense.create({
@@ -95,7 +95,7 @@ export async function PUT(request) {
     const userId = await getUserId(request);
     const body = await request.json();
     const { id, name, amount, category, date, pay, note } = body;
-    const formatDate = convertDateToPostgresFormat(date);
+    const formatDate = convertDatetoDB(date);
     const results = await prisma.expense.updateMany({
       where: {
         id: id,

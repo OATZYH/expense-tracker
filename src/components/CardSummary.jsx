@@ -25,16 +25,16 @@ export default function CardSummary({ title, amount, }) {
     <Card className="w-full">
       <CardHeader className="flex gap-3 h-[60px]">
         <div className="flex flex-row w-full items-center justify-between">
-          <p className="text-lg font-bold">{title}</p>
+          <p className="text-lg">{title}</p>
           {renderModal(title)}
         </div>
       </CardHeader>
       <Divider />
       <CardBody className="flex flex-row items-center">
-        <p className="text-xl">฿ {amount}</p>
-        <Chip startContent={<BalanceIcon size={18} />} size="sm">
+        <p className="text-2xl font-bold">฿ {amount}</p>
+        {/* <Chip startContent={<BalanceIcon size={18} />} size="sm">
           Chip
-        </Chip>
+        </Chip> */}
       </CardBody>
       <Divider />
     </Card>
