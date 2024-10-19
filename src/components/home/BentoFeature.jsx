@@ -1,9 +1,9 @@
 import React from "react";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import {
-  IconClipboardCopy,
-  IconFileBroken,
-  IconSignature,
+  IconStack3Filled,
+  IconTransfer,
+  IconCarambolaFilled,
   IconTableColumn,
 } from "@tabler/icons-react";
 import { AnimatedTooltipPreview } from "./TechStack";
@@ -48,7 +48,7 @@ const items = [
     description: "The tools and technologies that power this project.",
     header: <AnimatedTooltipPreview />,
     className: "md:col-span-2",
-    icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
+    icon: <IconStack3Filled className="h-4 w-4 text-neutral-500" />,
   },
   {
     title: "Custom transactions",
@@ -64,14 +64,14 @@ const items = [
       />
     ),
     className: "md:col-span-1",
-    icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
+    icon: <IconTransfer className="h-4 w-4 text-neutral-500" />,
   },
   {
     title: "Follow subscriptions",
     description: "Track your subscriptions and get notified.",
     header: <TextComingSoon />,
     className: "md:col-span-1",
-    icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
+    icon: <IconCarambolaFilled className="h-4 w-4 text-neutral-500" />,
   },
   {
     title: "Dashboard",
