@@ -6,7 +6,7 @@ import {
   Header,
   Body,
   Footer,
-} from "./sidebar.styles";
+} from "./Sidebar.styles";
 import SidebarItem from "./SidebarItem";
 import SidebarMenu from "./SidebarMenu";
 import HeadSidebar from "./HeadSidebar";
