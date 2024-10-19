@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 
 export default function Layout({ children }) {
   const pathname = usePathname();
+  
   return (
     <section className="flex">
       <Sidebar />
