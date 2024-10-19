@@ -1,7 +1,13 @@
 import React from "react";
 import { Select, SelectItem } from "@nextui-org/react";
 
-export default function SelectCategory({ category, label, placeholder, selectedKeys, setSelectedKeys }) {
+export default function SelectCategory({
+  category,
+  label,
+  placeholder,
+  selectedKeys,
+  setSelectedKeys,
+}) {
   return (
     <Select
       bordered
@@ -16,7 +22,9 @@ export default function SelectCategory({ category, label, placeholder, selectedK
         return (
           <div className="flex flex-wrap gap-2">
             {items.map((item) => {
-              const selectedItem = category.find((selectedItem) => selectedItem.key === item.key);
+              const selectedItem = category.find(
+                (selectedItem) => selectedItem.key === item.key
+              );
               return (
                 <div key={selectedItem.key}>
                   {selectedItem.emoji} {selectedItem.name}

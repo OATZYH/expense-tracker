@@ -2,11 +2,13 @@ export const summary = [
   {
     key:"totalBalance",
     title: "Total Balance",
+    type: "balance",
     amount: 0,
   },
   {
     key:"totalIncome",
     title: "Total Income",
+    type: "income",
     amount: 0,
     sub:[
       {
@@ -19,6 +21,7 @@ export const summary = [
   {
     key:"totalExpense",
     title: "Total Expense",
+    type: "expense",
     amount: 0,
     sub:[
       {

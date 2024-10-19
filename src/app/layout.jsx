@@ -3,6 +3,7 @@ import { Noto_Sans_Thai } from "@next/font/google";
 import { Providers } from "./provider";
 import SessionProvider from "../components/SessionProvider";
 import { getServerSession } from "next-auth";
+import { Toaster } from "react-hot-toast";
 
 const noto = Noto_Sans_Thai({ subsets: ["latin"] });
 
@@ -17,7 +18,10 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <body className={noto.className}>
         <Providers>
-          <SessionProvider session={session}>{children}</SessionProvider>
+          <SessionProvider session={session}>
+            <Toaster position="bottom-center" />
+            {children}
+          </SessionProvider>
         </Providers>
       </body>
     </html>

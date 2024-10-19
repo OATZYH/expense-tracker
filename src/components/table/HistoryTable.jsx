@@ -14,7 +14,7 @@ import { DeleteIcon } from "@/components/icons/DeleteIcon";
 import TopContent from "@/components/table/TopContent";
 import BottomContent from "@/components/table/BottomContent";
 import { expensesCategory, expensesPay } from "@/constants/categories";
-import { convertDBtoDate } from "@/lib/formatDate";
+import { formatDateForDisplay } from "@/lib/formatDate";
 
 const INITIAL_VISIBLE_COLUMNS = [
   "name",
@@ -127,11 +127,11 @@ export default function HistoryTable({
           </div>
         );
       case "date":
-        const { year, month, day } = convertDBtoDate(cellValue);
-        return (
-          <div className="flex items-center">
-            <span>{`${day}-${month}-${year}`}</span>
-          </div>
+        const formattedDate = formatDateForDisplay(cellValue);
+  return (
+    <div className="flex items-center">
+      <span>{formattedDate}</span>
+    </div>
         );
       //TODO: Limit the length of the note in MODAL
       case "note":
@@ -153,7 +153,7 @@ export default function HistoryTable({
                 <EditIcon />
               </Button>
             </Tooltip>
-            <Tooltip color="danger" content="Delete user">
+            <Tooltip color="danger" content="Delete">
               <Button
                 isIconOnly
                 aria-label="Delete"

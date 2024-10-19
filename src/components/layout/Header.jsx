@@ -1,10 +1,24 @@
 "use client";
-import React from "react";
-import { Navbar, NavbarContent} from "@nextui-org/react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { Navbar, NavbarContent, Button} from "@nextui-org/react";
 import DatePicker from "../DatePicker";
 
-export default function Header({ children, showDatePicker = false }) {
-  
+export default function Header({ children, showDatePicker = false}) {
+  const pathname = usePathname();
+  const [title, setTitle] = useState("Dashboard");
+  useEffect(() => {
+    // console.log("Current Path:", pathname);
+    if (pathname === "/dashboard") {
+      setTitle("Dashboard");
+    } else if (pathname === "/dashboard/expenses") {
+      setTitle("Expenses");
+    } else if (pathname === "/dashboard/incomes") {
+      setTitle("Incomes");
+    } else if (pathname === "/dashboard/subscriptions") {
+      setTitle("Subscriptions");
+    }
+  }, [pathname]);
   return (
     <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
       <Navbar
@@ -17,7 +31,7 @@ export default function Header({ children, showDatePicker = false }) {
         <NavbarContent className="md:hidden">
           {/* <BurguerButton /> */}
         </NavbarContent>
-        <NavbarContent className="w-fit">Content</NavbarContent>
+        <NavbarContent className="w-fit">{title}</NavbarContent>
         <NavbarContent>
           {showDatePicker ? (
             <DatePicker />
@@ -26,7 +40,11 @@ export default function Header({ children, showDatePicker = false }) {
           null}
         </NavbarContent>
         <NavbarContent justify="end" className="w-fit">
-          <div>end</div>
+          <Button auto size="small" color="primary" onPress={
+            () => window.location.href = "/"
+          }>
+            Home
+          </Button>
         </NavbarContent>
       </Navbar>
       {children}

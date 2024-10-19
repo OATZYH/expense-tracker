@@ -8,10 +8,10 @@ export default function HeadSidebar() {
       <Avatar
         isBordered
         radius="full"
-        src="https://i.pravatar.cc/150?u=a04258114e29026708c"
+        src="https://res.cloudinary.com/dtomkzlym/image/upload/v1729308863/profile_primary.jpg"
         className="!w-24 !h-24"
       />
-      <p>Username</p>
+      <p>GITHUB : OATZYH</p>
     </div>
   );
 }

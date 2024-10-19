@@ -31,12 +31,9 @@ return (
     ) : (
       <>
         <CardSummary
-          title="Total Expense"
+          title="Total Income"
           amount={totalIncome}
-        />
-        <CardSummary
-          title="Total Expense Transactions"
-          amount={totalIncomeTransactions}
+          type={"income"}
         />
       </>
     )}

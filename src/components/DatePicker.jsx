@@ -72,12 +72,13 @@ function DatePickerSingle({ value, onChange }) {
   };
   return (
     <Select
-      label="Favorite Animal"
+      label="Period"
       variant="bordered"
-      placeholder="Select an animal"
+      placeholder="Select period"
       selectedKeys={[value]}
       className="max-w-xs"
       onChange={handleSelectionChange}
+      isDisabled
     >
       <SelectItem value="none">Select</SelectItem>
       <SelectItem value="tdy">Today</SelectItem>

@@ -35,6 +35,7 @@ export default function DashboardSummary() {
               key={item.key}
               title={item.title}
               amount={item.amount}
+              type={item.type}
             />
           ))}
         </>
