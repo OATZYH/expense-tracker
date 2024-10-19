@@ -89,7 +89,7 @@ export default function SignupForm() {
             </Link>
           </p>
           <div className="flex gap-2 justify-end">
-            <Button fullWidth color="primary" type="submit">
+            <Button fullWidth color="primary" type="submit" isDisabled>
               Sign up
             </Button>
           </div>

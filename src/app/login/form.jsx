@@ -14,8 +14,8 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("test@gmail.com");
+  const [password, setPassword] = useState("1234");
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
@@ -53,6 +53,7 @@ export default function LoginForm() {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <Input
             isRequired
+            isDisabled
             label="Email"
             labelPlacement="inside"
             type="email"
@@ -62,6 +63,7 @@ export default function LoginForm() {
           />
           <Input
             isRequired
+            isDisabled
             label="Password"
             labelPlacement="inside"
             type="password"
